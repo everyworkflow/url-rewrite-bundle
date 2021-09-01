@@ -23,7 +23,7 @@ const FinalPage = () => {
             try {
                 const response = await Remote.get(`/url-rewrite${pathName}`);
                 setData(response);
-            } catch (error) {
+            } catch (error: any) {
                 console.log('error -->', error.message);
                 setData(false);
             }
