@@ -2,21 +2,21 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React, {useEffect, useState} from 'react';
-import Error404Component from "@EveryWorkflow/CoreBundle/Component/Error404Component";
-import Remote from "@EveryWorkflow/CoreBundle/Service/Remote";
-import {useHistory} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import Error404Component from "@EveryWorkflow/PanelBundle/Component/Error404Component";
+import Remote from "@EveryWorkflow/PanelBundle/Service/Remote";
+import { useLocation } from "react-router-dom";
 import PageBuilderComponent from "@EveryWorkflow/PageBuilderBundle/Component/PageBuilderComponent";
-import {useTitle} from "ahooks";
-import LoadingIndicatorComponent from "@EveryWorkflow/CoreBundle/Component/LoadingIndicatorComponent";
+import { useTitle } from "ahooks";
+import LoadingIndicatorComponent from "@EveryWorkflow/PanelBundle/Component/LoadingIndicatorComponent";
 
 const FinalPage = () => {
     const [data, setData] = useState<any>(undefined);
-    const history = useHistory();
+    const location = useLocation();
 
     useEffect(() => {
         const run = async () => {
-            let pathName = history.location.pathname;
+            let pathName = location.pathname;
             if (pathName === '/') {
                 pathName = '/home';
             }
@@ -29,7 +29,7 @@ const FinalPage = () => {
             }
         }
         run();
-    }, [history.location.pathname]);
+    }, [location.pathname]);
 
     const RenderPageContent = () => {
         if (data.meta_title) {
@@ -38,8 +38,8 @@ const FinalPage = () => {
         return (
             <>
                 {(data && !!data.page_builder_data) ? (
-                    <PageBuilderComponent pageBuilderData={data.page_builder_data}/>
-                ) : <Error404Component/>}
+                    <PageBuilderComponent pageBuilderData={data.page_builder_data} />
+                ) : <Error404Component />}
             </>
         );
     }
@@ -47,8 +47,8 @@ const FinalPage = () => {
     return (
         <>
             {(data !== undefined) ? (
-                <RenderPageContent/>
-            ) : <LoadingIndicatorComponent/>}
+                <RenderPageContent />
+            ) : <LoadingIndicatorComponent />}
         </>
     );
 }
