@@ -8,21 +8,17 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\UrlRewriteBundle\Document;
 
-use EveryWorkflow\CoreBundle\Annotation\EWFDataTypes;
 use EveryWorkflow\MongoBundle\Document\BaseDocument;
 use EveryWorkflow\MongoBundle\Document\HelperTrait\CreatedUpdatedHelperTrait;
 use EveryWorkflow\MongoBundle\Document\HelperTrait\StatusHelperTrait;
+use EveryWorkflow\CoreBundle\Validation\Type\StringValidation;
 
 class UrlRewriteDocument extends BaseDocument implements UrlRewriteDocumentInterface
 {
     use CreatedUpdatedHelperTrait;
     use StatusHelperTrait;
 
-    /**
-     * @param string $url
-     * @return $this
-     * @EWFDataTypes (type="string", mongofield=self::KEY_URL, required=TRUE, minLength=3, maxLength=50)
-     */
+    #[StringValidation(required: true, minLength: 3, maxLength: 50)]
     public function setUrl(string $url): self
     {
         $this->dataObject->setData(self::KEY_URL, $url);
@@ -34,11 +30,7 @@ class UrlRewriteDocument extends BaseDocument implements UrlRewriteDocumentInter
         return $this->dataObject->getData(self::KEY_URL);
     }
 
-    /**
-     * @param string $type
-     * @return $this
-     * @EWFDataTypes (type="string", mongofield=self::KEY_TYPE, required=TRUE)
-     */
+    #[StringValidation(required: true)]
     public function setType(string $type): self
     {
         $this->dataObject->setData(self::KEY_TYPE, $type);
@@ -50,11 +42,7 @@ class UrlRewriteDocument extends BaseDocument implements UrlRewriteDocumentInter
         return $this->dataObject->getData(self::KEY_TYPE);
     }
 
-    /**
-     * @param string $typeKey
-     * @return $this
-     * @EWFDataTypes (type="string", mongofield=self::KEY_TYPE_KEY, required=TRUE)
-     */
+    #[StringValidation(required: true)]
     public function setTypeKey(string $typeKey): self
     {
         $this->dataObject->setData(self::KEY_TYPE_KEY, $typeKey);

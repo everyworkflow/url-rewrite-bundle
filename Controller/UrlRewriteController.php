@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\UrlRewriteBundle\Controller;
 
+use EveryWorkflow\CoreBundle\Annotation\EwRoute;
 use EveryWorkflow\UrlRewriteBundle\Resolver\RouteResolverInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,14 +27,13 @@ class UrlRewriteController extends AbstractController
         $this->logger = $logger;
     }
 
-    /**
-     * @Route(
-     *     path="api/url-rewrite/{url}",
-     *     requirements={"wildcard": ".*"},
-     *     name="api.url_rewrite.get",
-     *     methods="GET"
-     * )
-     */
+    #[EwRoute(
+        path: '/url-rewrite/{url}',
+        name: 'url_rewrite.get',
+        priority: -990,
+        methods: 'GET',
+        requirements: ['wildcard' => '.*']
+    )]
     public function __invoke(string $url, Request $request): Response
     {
         try {

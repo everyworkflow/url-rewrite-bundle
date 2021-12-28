@@ -8,19 +8,14 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\UrlRewriteBundle\Repository;
 
-use EveryWorkflow\CoreBundle\Annotation\RepoDocument;
 use EveryWorkflow\MongoBundle\Repository\BaseDocumentRepository;
+use EveryWorkflow\MongoBundle\Support\Attribute\RepositoryAttribute;
 use EveryWorkflow\UrlRewriteBundle\Document\UrlRewriteDocument;
 use EveryWorkflow\UrlRewriteBundle\Document\UrlRewriteDocumentInterface;
 
-/**
- * @RepoDocument(doc_name=UrlRewriteDocument::class)
- */
+#[RepositoryAttribute(documentClass: UrlRewriteDocument::class, primaryKey: 'url')]
 class UrlRewriteRepository extends BaseDocumentRepository implements UrlRewriteRepositoryInterface
 {
-    protected string $collectionName = 'url_rewrite_collection';
-    protected array $indexNames = ['url'];
-
     protected function validateSingle(UrlRewriteDocumentInterface $urlRewriteDocument): void
     {
         if (!$urlRewriteDocument->getUrl()) {
@@ -54,7 +49,7 @@ class UrlRewriteRepository extends BaseDocumentRepository implements UrlRewriteR
         $mongoData = $this->getCollection()->find($filter, $options);
         /** @var \MongoDB\Model\BSONDocument $mongoItem */
         foreach ($mongoData as $mongoItem) {
-            $items[] = $this->getDocumentFactory()->create(UrlRewriteDocument::class, $mongoItem->getArrayCopy());
+            $items[] = $this->create($mongoItem->getArrayCopy());
         }
         return $items;
     }
@@ -65,6 +60,6 @@ class UrlRewriteRepository extends BaseDocumentRepository implements UrlRewriteR
         if (!$mongoItem) {
             throw new \Exception('Document not found under ' . $this->collectionName);
         }
-        return $this->getDocumentFactory()->create(UrlRewriteDocument::class, $mongoItem->getArrayCopy());
+        return $this->create($mongoItem->getArrayCopy());
     }
 }
